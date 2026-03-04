@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>销售日报业绩系统 MVP</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <h1>销售日报业绩系统</h1>
+        <p>上传手写白板照片，自动识别并生成当日排名与前三喜报。</p>
+      </header>
+
+      <section class="card">
+        <h2>1. 上传业绩照片</h2>
+        <form id="uploadForm" class="grid">
+          <label>
+            统计日期（可选）
+            <input id="reportDate" type="date" />
+          </label>
+          <label>
+            白板照片
+            <input id="photoInput" type="file" accept="image/*" required />
+          </label>
+          <button type="submit">上传并自动识别</button>
+        </form>
+        <p id="uploadMsg" class="msg"></p>
+      </section>
+
+      <section class="card">
+        <div class="row-head">
+          <h2>2. 识别结果（可人工修正）</h2>
+          <button id="submitFixBtn" type="button">提交修正数据</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>员工</th>
+              <th>成交量</th>
+              <th>高意向客户数</th>
+              <th>私域新增数</th>
+              <th>置信度</th>
+            </tr>
+          </thead>
+          <tbody id="parsedBody">
+            <tr><td colspan="5" class="empty">暂无数据</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>3. 每日排名</h2>
+        <p class="muted">排序规则：成交量 > 高意向客户数 > 私域新增数</p>
+        <table>
+          <thead>
+            <tr>
+              <th>名次</th>
+              <th>员工</th>
+              <th>成交量</th>
+              <th>高意向客户数</th>
+              <th>私域新增数</th>
+            </tr>
+          </thead>
+          <tbody id="rankingBody">
+            <tr><td colspan="5" class="empty">暂无排名</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>4. 前三喜报</h2>
+        <div id="posterGrid" class="poster-grid">
+          <p class="empty">暂无喜报</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="/assets/app.js"></script>
+  </body>
+</html>
