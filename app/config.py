@@ -11,9 +11,9 @@ UPLOAD_DIR = DATA_DIR / "uploads"
 POSTER_DIR = DATA_DIR / "posters"
 DB_PATH = Path(os.getenv("DB_PATH", str(DATA_DIR / "sales_mvp.db")))
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
+KIMI_API_KEY = os.getenv("KIMI_API_KEY", "").strip()
+KIMI_MODEL = os.getenv("KIMI_MODEL", "kimi-latest")
+KIMI_BASE_URL = os.getenv("KIMI_BASE_URL", "https://api.moonshot.cn/v1")
 MAX_UPLOAD_BYTES = int(os.getenv("MAX_UPLOAD_BYTES", "4000000"))
 
 POSTER_FONT_PATH = os.getenv("POSTER_FONT_PATH", "").strip()

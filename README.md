@@ -15,7 +15,7 @@
 ## 技术栈
 - 后端：FastAPI
 - 存储：SQLite（MVP）
-- OCR：OpenAI 视觉模型（可配置）
+- OCR：Kimi 2.5 视觉模型（可配置）
 - 喜报：Pillow 动态生成 PNG
 - 前端：原生 HTML/CSS/JS
 
@@ -31,7 +31,7 @@ pip install -r requirements.txt
 ### 2) 配置环境变量
 ```bash
 cp .env.example .env
-# 填写 OPENAI_API_KEY
+# 填写 KIMI_API_KEY
 ```
 
 ### 3) 启动
@@ -53,8 +53,8 @@ uvicorn app.main:app --reload --port 8000
 1. 将代码推送到 Git 仓库。
 2. 在 Render 新建 `Web Service`，环境选择 `Docker`。
 3. 配置环境变量：
-   - `OPENAI_API_KEY`
-   - `OPENAI_MODEL`（默认 `gpt-4o-mini`）
+   - `KIMI_API_KEY`
+   - `KIMI_MODEL`（默认 `kimi-latest`）
    - `POSTER_FONT_PATH`（建议配中文字体路径）
 4. 点击部署，完成后即可通过域名访问。
 
@@ -83,9 +83,9 @@ git push -u origin main
 
 ### 3) 配置环境变量
 在 Vercel 项目设置里添加：
-- `OPENAI_API_KEY` = 你的密钥
-- `OPENAI_MODEL` = `gpt-4o-mini`
-- `OPENAI_BASE_URL` = `https://api.openai.com/v1`
+- `KIMI_API_KEY` = 你的密钥
+- `KIMI_MODEL` = `kimi-latest`
+- `KIMI_BASE_URL` = `https://api.moonshot.cn/v1`
 - `DATA_DIR` = `/tmp/sales_mvp_data`
 - `DB_PATH` = `/tmp/sales_mvp_data/sales_mvp.db`
 - `MAX_UPLOAD_BYTES` = `4000000`

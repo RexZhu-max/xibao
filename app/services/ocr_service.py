@@ -8,7 +8,7 @@ from typing import Any
 
 import requests
 
-from app.config import OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL
+from app.config import KIMI_API_KEY, KIMI_BASE_URL, KIMI_MODEL
 
 
 class OCRError(Exception):
@@ -76,8 +76,8 @@ def _normalize_payload(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 def parse_sales_board(image_bytes: bytes, mime_type: str) -> dict[str, Any]:
-    if not OPENAI_API_KEY:
-        raise OCRError("缺少 OPENAI_API_KEY，无法执行自动识别")
+    if not KIMI_API_KEY:
+        raise OCRError("缺少 KIMI_API_KEY，无法执行自动识别")
 
     image_b64 = base64.b64encode(image_bytes).decode("utf-8")
     prompt = (
@@ -90,27 +90,31 @@ def parse_sales_board(image_bytes: bytes, mime_type: str) -> dict[str, Any]:
     )
 
     payload = {
-        "model": OPENAI_MODEL,
-        "input": [
+        "model": KIMI_MODEL,
+        "messages": [
             {
                 "role": "user",
                 "content": [
-                    {"type": "input_text", "text": prompt},
-                    {"type": "input_image", "image_url": f"data:{mime_type};base64,{image_b64}"},
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:{mime_type};base64,{image_b64}"},
+                    },
                 ],
             }
         ],
-        "max_output_tokens": 1200,
+        "temperature": 0.1,
+        "max_tokens": 1200,
     }
 
     headers = {
-        "Authorization": f"Bearer {OPENAI_API_KEY}",
+        "Authorization": f"Bearer {KIMI_API_KEY}",
         "Content-Type": "application/json",
     }
 
     try:
         response = requests.post(
-            f"{OPENAI_BASE_URL.rstrip('/')}/responses",
+            f"{KIMI_BASE_URL.rstrip('/')}/chat/completions",
             headers=headers,
             json=payload,
             timeout=90,
@@ -121,14 +125,27 @@ def parse_sales_board(image_bytes: bytes, mime_type: str) -> dict[str, Any]:
     if response.status_code >= 400:
         raise OCRError(f"OCR 服务调用失败: HTTP {response.status_code} {response.text[:300]}")
 
-    data = response.json()
-    output_text = data.get("output_text")
+    try:
+        data = response.json()
+    except ValueError as exc:
+        raise OCRError("OCR 响应不是合法 JSON") from exc
+
+    try:
+        content = data["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise OCRError("OCR 响应结构异常，缺少 choices[0].message.content") from exc
+
+    if isinstance(content, list):
+        output_text = "\n".join(
+            str(part.get("text", ""))
+            for part in content
+            if isinstance(part, dict) and part.get("type") in {"text", "output_text"}
+        ).strip()
+    else:
+        output_text = str(content).strip()
 
     if not output_text:
-        try:
-            output_text = data["output"][0]["content"][0]["text"]
-        except (KeyError, IndexError, TypeError) as exc:
-            raise OCRError("OCR 响应结构异常，缺少 output_text") from exc
+        raise OCRError("OCR 响应为空")
 
     parsed = _extract_json_block(output_text)
     return _normalize_payload(parsed)
