@@ -1,83 +1,186 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>销售业绩运营后台</title>
-    <link rel="stylesheet" href="/assets/styles.css" />
-  </head>
-  <body>
-    <div class="bg-shape bg-shape-a"></div>
-    <div class="bg-shape bg-shape-b"></div>
 
-    <div class="layout">
-      <aside class="sidebar">
-        <div class="brand">
-          <div class="brand-logo">S</div>
-          <div>
-            <h1>销售运营台</h1>
-            <p>Daily Performance Ops</p>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>销售业绩运营后台</title>
+  <meta name="description" content="销售部门每日业绩管理系统，支持 OCR 识别、业绩录入、排名喜报生成" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="layout">
+    <!-- ======== 侧边栏 ======== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo"><img src="./logo.png" alt="Sales Ops Logo" /></div>
+        <div>
+          <h1>销售运营台</h1>
+          <p>Daily Performance Ops</p>
         </div>
+      </div>
 
-        <nav class="nav">
-          <button class="nav-item active" data-view="dashboard">仪表盘</button>
-          <button class="nav-item" data-view="ocr">OCR 上传</button>
-          <button class="nav-item" data-view="employees">员工管理</button>
-          <button class="nav-item" data-view="performances">业绩管理</button>
-          <button class="nav-item" data-view="ranking">排名喜报</button>
-        </nav>
-      </aside>
+      <nav class="nav">
+        <span class="nav-label">主菜单</span>
 
-      <main class="main">
-        <header class="topbar card">
-          <div>
-            <h2>销售部门每日业绩系统</h2>
-            <p>统一管理：识别、录入、排名、喜报生成</p>
-          </div>
-          <label>
-            今日统计日期
+        <button class="nav-item active" data-view="dashboard">
+          <svg class="nav-item-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              d="M2 4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4zm0 9a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-2zm8-9a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4zm0 6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-5z" />
+          </svg>
+          仪表盘
+        </button>
+
+        <button class="nav-item" data-view="ocr">
+          <svg class="nav-item-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M4 3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+              clip-rule="evenodd" />
+          </svg>
+          OCR 上传
+        </button>
+
+        <span class="nav-label">管理</span>
+
+        <button class="nav-item" data-view="employees">
+          <svg class="nav-item-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM17 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 0 0-1.5-4.33A5 5 0 0 1 19 16v1h-6.07zM6 11a5 5 0 0 1 5 5v1H1v-1a5 5 0 0 1 5-5z" />
+          </svg>
+          员工管理
+        </button>
+
+        <button class="nav-item" data-view="performances">
+          <svg class="nav-item-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              d="M2 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-5zM8 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V7zM14 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V4z" />
+          </svg>
+          业绩管理
+        </button>
+
+        <button class="nav-item" data-view="ranking">
+          <svg class="nav-item-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M5 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1V3a1 1 0 0 1 1-1zm9 7a1 1 0 1 0-2 0v3.586l-1.293-1.293a1 1 0 0 0-1.414 1.414l3 3a1 1 0 0 0 1.414 0l3-3a1 1 0 0 0-1.414-1.414L14 12.586V9z"
+              clip-rule="evenodd" />
+          </svg>
+          排名喜报
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        © 2025 销售运营台 · v1.0
+      </div>
+    </aside>
+
+    <!-- ======== 主内容区 ======== -->
+    <main class="main">
+      <!-- 顶栏 -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h2 id="topbarTitle">仪表盘</h2>
+          <p id="topbarSubtitle">统一管理：识别、录入、排名、喜报生成</p>
+        </div>
+        <div class="topbar-right">
+          <label class="date-selector" title="选择统计日期">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M6 2a1 1 0 0 0-1 1v1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1V3a1 1 0 1 0-2 0v1H7V3a1 1 0 0 0-1-1zm0 5a1 1 0 0 0 0 2h8a1 1 0 1 0 0-2H6z"
+                clip-rule="evenodd" />
+            </svg>
+            <span>统计日期</span>
             <input type="date" id="globalDate" />
           </label>
-        </header>
+        </div>
+      </header>
 
+      <!-- 视图容器 -->
+      <div class="view-content">
+
+        <!-- ===== 仪表盘 ===== -->
         <section id="view-dashboard" class="view active">
+
+          <!-- 统计卡片 -->
           <div class="stats-grid">
-            <article class="stat card">
-              <p>参与员工</p>
-              <h3 id="statStaff">0</h3>
+            <article class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">参与员工</span>
+                <div class="stat-icon">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM17 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 0 0-1.5-4.33A5 5 0 0 1 19 16v1h-6.07zM6 11a5 5 0 0 1 5 5v1H1v-1a5 5 0 0 1 5-5z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-value" id="statStaff">0</div>
+              <div class="stat-footer">今日在线员工数</div>
             </article>
-            <article class="stat card">
-              <p>总成交量</p>
-              <h3 id="statDeal">0</h3>
+
+            <article class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">总成交量</span>
+                <div class="stat-icon">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                      d="M6.267 3.455a3.066 3.066 0 0 0 1.745-.723 3.066 3.066 0 0 1 3.976 0 3.066 3.066 0 0 0 1.745.723 3.066 3.066 0 0 1 2.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 0 1 0 3.976 3.066 3.066 0 0 0-.723 1.745 3.066 3.066 0 0 1-2.812 2.812 3.066 3.066 0 0 0-1.745.723 3.066 3.066 0 0 1-3.976 0 3.066 3.066 0 0 0-1.745-.723 3.066 3.066 0 0 1-2.812-2.812 3.066 3.066 0 0 0-.723-1.745 3.066 3.066 0 0 1 0-3.976 3.066 3.066 0 0 0 .723-1.745 3.066 3.066 0 0 1 2.812-2.812zm7.44 5.252a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z"
+                      clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-value" id="statDeal">0</div>
+              <div class="stat-footer">今日成交笔数</div>
             </article>
-            <article class="stat card">
-              <p>总高意向客户</p>
-              <h3 id="statIntent">0</h3>
+
+            <article class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">高意向客户</span>
+                <div class="stat-icon">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-value" id="statIntent">0</div>
+              <div class="stat-footer">高意向潜在客户</div>
             </article>
-            <article class="stat card">
-              <p>总私域新增</p>
-              <h3 id="statPrivate">0</h3>
+
+            <article class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">私域新增</span>
+                <div class="stat-icon">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      d="M13 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM18 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM14 15a4 4 0 0 0-8 0v3h8v-3zM6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM16 18v-3a5.972 5.972 0 0 0-.75-2.906A3.005 3.005 0 0 1 19 15v3h-3zM4.75 12.094A5.973 5.973 0 0 0 4 15v3H1v-3a3 3 0 0 1 3.75-2.906z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="stat-value" id="statPrivate">0</div>
+              <div class="stat-footer">今日私域新增人数</div>
             </article>
           </div>
 
+          <!-- 销冠 + Top3 -->
           <div class="split-grid">
             <article class="card champion-card">
+              <span class="champion-crown">🏆</span>
               <h3>今日销冠</h3>
               <p id="championName" class="champion-name">暂无</p>
-              <p id="championMetrics" class="muted">请先录入今日数据</p>
+              <p id="championMetrics" class="champion-metrics">请先录入今日数据</p>
             </article>
-            <article class="card">
-              <div class="section-head">
-                <h3>Top 3</h3>
-              </div>
-              <ul id="topThreeList" class="simple-list">
-                <li class="empty">暂无数据</li>
+
+            <article class="card top3-card">
+              <h3>Top 3 排行</h3>
+              <ul id="topThreeList" class="top3-list">
+                <li class="top3-empty">暂无数据</li>
               </ul>
             </article>
           </div>
+
         </section>
 
+        <!-- ===== OCR 上传 ===== -->
         <section id="view-ocr" class="view">
           <article class="card">
             <div class="section-head">
@@ -92,15 +195,29 @@
                 白板照片
                 <input id="photoInput" type="file" accept="image/*" required />
               </label>
-              <button type="submit" class="btn primary">上传并识别</button>
+              <button type="submit" class="btn primary">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M3 17a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zM6.293 6.707a1 1 0 0 1 0-1.414l3-3a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1-1.414 1.414L11 5.414V13a1 1 0 1 1-2 0V5.414L7.707 6.707a1 1 0 0 1-1.414 0z"
+                    clip-rule="evenodd" />
+                </svg>
+                上传并识别
+              </button>
             </form>
             <p id="uploadMsg" class="msg"></p>
           </article>
 
           <article class="card">
             <div class="section-head">
-              <h3>识别结果（支持修正提交）</h3>
-              <button id="submitFixBtn" class="btn">提交修正</button>
+              <h3>识别结果（支持修正后提交）</h3>
+              <button id="submitFixBtn" class="btn primary sm">
+                <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0z"
+                    clip-rule="evenodd" />
+                </svg>
+                提交修正
+              </button>
             </div>
             <div class="table-wrap">
               <table>
@@ -114,21 +231,38 @@
                   </tr>
                 </thead>
                 <tbody id="parsedBody">
-                  <tr><td class="empty" colspan="5">暂无识别数据</td></tr>
+                  <tr>
+                    <td class="empty" colspan="5">暂无识别数据，请先上传白板照片</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </article>
         </section>
 
+        <!-- ===== 员工管理 ===== -->
         <section id="view-employees" class="view">
           <article class="card">
             <div class="section-head">
               <h3>员工列表</h3>
               <div class="row-actions">
-                <input id="employeeSearch" placeholder="搜索员工姓名" />
-                <button id="employeeSearchBtn" class="btn">查询</button>
-                <button id="addEmployeeBtn" class="btn primary">新增员工</button>
+                <input id="employeeSearch" placeholder="搜索员工姓名…" style="width:180px" />
+                <button id="employeeSearchBtn" class="btn">
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                      d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM2 8a6 6 0 1 1 10.89 3.476l4.817 4.817a1 1 0 0 1-1.414 1.414l-4.816-4.816A6 6 0 0 1 2 8z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  查询
+                </button>
+                <button id="addEmployeeBtn" class="btn primary">
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                      d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  新增员工
+                </button>
               </div>
             </div>
             <div class="table-wrap">
@@ -143,30 +277,49 @@
                   </tr>
                 </thead>
                 <tbody id="employeeBody">
-                  <tr><td class="empty" colspan="5">暂无员工</td></tr>
+                  <tr>
+                    <td class="empty" colspan="5">暂无员工数据</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </article>
         </section>
 
+        <!-- ===== 业绩管理 ===== -->
         <section id="view-performances" class="view">
           <article class="card">
             <div class="section-head">
               <h3>业绩记录</h3>
               <div class="row-actions">
-                <label>
+                <label
+                  style="flex-direction:row;align-items:center;gap:6px;color:var(--text-tertiary);font-size:12.5px">
                   日期
-                  <input id="perfDateFilter" type="date" />
+                  <input id="perfDateFilter" type="date" style="width:150px" />
                 </label>
-                <label>
+                <label
+                  style="flex-direction:row;align-items:center;gap:6px;color:var(--text-tertiary);font-size:12.5px">
                   员工
-                  <select id="perfEmployeeFilter">
+                  <select id="perfEmployeeFilter" style="width:120px">
                     <option value="">全部</option>
                   </select>
                 </label>
-                <button id="perfFilterBtn" class="btn">筛选</button>
-                <button id="addPerfBtn" class="btn primary">新增业绩</button>
+                <button id="perfFilterBtn" class="btn">
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                      d="M3 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-.293.707L13 10.414V17a1 1 0 0 1-.553.894l-4 2A1 1 0 0 1 7 19v-8.586L3.293 6.707A1 1 0 0 1 3 6V3z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  筛选
+                </button>
+                <button id="addPerfBtn" class="btn primary">
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                      d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  新增业绩
+                </button>
               </div>
             </div>
             <div class="table-wrap">
@@ -184,20 +337,30 @@
                   </tr>
                 </thead>
                 <tbody id="performanceBody">
-                  <tr><td class="empty" colspan="8">暂无业绩记录</td></tr>
+                  <tr>
+                    <td class="empty" colspan="8">暂无业绩记录</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </article>
         </section>
 
+        <!-- ===== 排名喜报 ===== -->
         <section id="view-ranking" class="view">
           <article class="card">
             <div class="section-head">
-              <h3>每日排名与喜报</h3>
+              <h3>每日业绩排名</h3>
               <div class="row-actions">
-                <input id="rankingDate" type="date" />
-                <button id="refreshRankingBtn" class="btn">刷新排名</button>
+                <input id="rankingDate" type="date" style="width:160px" />
+                <button id="refreshRankingBtn" class="btn">
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                      d="M4 2a1 1 0 0 1 1 1v2.101a7.002 7.002 0 0 1 11.601 2.566 1 1 0 1 1-1.885.666A5.002 5.002 0 0 0 5.999 7H9a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm.008 9.057a1 1 0 0 1 1.276.61A5.002 5.002 0 0 0 14.001 13H11a1 1 0 1 1 0-2h5a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-2.101a7.002 7.002 0 0 1-11.601-2.566 1 1 0 0 1 .61-1.276z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  刷新排名
+                </button>
               </div>
             </div>
             <div class="table-wrap">
@@ -212,33 +375,41 @@
                   </tr>
                 </thead>
                 <tbody id="rankingBody">
-                  <tr><td class="empty" colspan="5">暂无排名数据</td></tr>
+                  <tr>
+                    <td class="empty" colspan="5">暂无排名数据</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </article>
 
           <article class="card">
-            <h3>Top 3 喜报</h3>
+            <div class="section-head">
+              <h3>🎉 Top 3 喜报</h3>
+            </div>
             <div id="posterGrid" class="poster-grid">
-              <p class="empty">暂无喜报</p>
+              <p class="empty">暂无喜报，请先生成排名</p>
             </div>
           </article>
         </section>
-      </main>
-    </div>
 
-    <div id="modal" class="modal hidden">
-      <div class="modal-content card">
-        <h3 id="modalTitle">弹窗</h3>
-        <form id="modalForm" class="modal-form"></form>
-        <div class="modal-actions">
-          <button id="modalCancel" class="btn" type="button">取消</button>
-          <button id="modalConfirm" class="btn primary" type="button">保存</button>
-        </div>
+      </div><!-- /view-content -->
+    </main>
+  </div>
+
+  <!-- ======== 模态框 ======== -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content card">
+      <h3 id="modalTitle">弹窗</h3>
+      <form id="modalForm" class="modal-form"></form>
+      <div class="modal-actions">
+        <button id="modalCancel" class="btn" type="button">取消</button>
+        <button id="modalConfirm" class="btn primary" type="button">保存</button>
       </div>
     </div>
+  </div>
 
-    <script src="/assets/app.js"></script>
-  </body>
+  <script src="./app.js"></script>
+</body>
+
 </html>

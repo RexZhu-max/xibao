@@ -86,6 +86,14 @@ function showMessage(message, isError = false) {
   uploadMsg.className = `msg ${isError ? "err" : "ok"}`;
 }
 
+const VIEW_TITLES = {
+  dashboard: { title: "仪表盘", subtitle: "统一管理：识别、录入、排名、喜报生成" },
+  ocr: { title: "OCR 上传", subtitle: "上传白板照片，自动识别业绩数据" },
+  employees: { title: "员工管理", subtitle: "管理销售团队成员信息" },
+  performances: { title: "业绩管理", subtitle: "录入与查询员工每日业绩数据" },
+  ranking: { title: "排名喜报", subtitle: "查看每日排名并生成销冠喜报" },
+};
+
 function switchView(viewKey) {
   navItems.forEach((item) => {
     item.classList.toggle("active", item.dataset.view === viewKey);
@@ -94,6 +102,14 @@ function switchView(viewKey) {
   views.forEach((view) => {
     view.classList.toggle("active", view.id === `view-${viewKey}`);
   });
+
+  const info = VIEW_TITLES[viewKey];
+  if (info) {
+    const titleEl = document.getElementById("topbarTitle");
+    const subtitleEl = document.getElementById("topbarSubtitle");
+    if (titleEl) titleEl.textContent = info.title;
+    if (subtitleEl) subtitleEl.textContent = info.subtitle;
+  }
 }
 
 function openModal(config) {
@@ -152,14 +168,17 @@ function renderDashboard(data) {
   }
 
   if (!data.top_three?.length) {
-    topThreeList.innerHTML = '<li class="empty">暂无数据</li>';
+    topThreeList.innerHTML = '<li class="top3-empty">暂无数据，请先录入今日业绩</li>';
     return;
   }
 
+  const rankClass = (r) => r === 1 ? "top3-rank-1" : r === 2 ? "top3-rank-2" : r === 3 ? "top3-rank-3" : "top3-rank-n";
   topThreeList.innerHTML = data.top_three
     .map(
-      (item) => `<li>TOP ${item.rank} · ${escapeHtml(item.employee_name)}
-      <span class="muted">成交 ${item.deal_count} / 高意向 ${item.high_intent_count} / 私域 ${item.private_domain_new}</span>
+      (item) => `<li class="top3-item">
+        <div class="top3-rank ${rankClass(item.rank)}">${item.rank}</div>
+        <span class="top3-name">${escapeHtml(item.employee_name)}</span>
+        <div class="top3-stats">成交 ${item.deal_count}<br>意向 ${item.high_intent_count} / 私域 ${item.private_domain_new}</div>
       </li>`
     )
     .join("");
@@ -224,14 +243,14 @@ function renderEmployees(items = []) {
   employeeBody.innerHTML = items
     .map(
       (item) => `<tr>
-      <td>${item.id}</td>
-      <td>${escapeHtml(item.name)}</td>
-      <td>${item.performance_count}</td>
-      <td>${item.created_at || "-"}</td>
+      <td><span style="color:var(--text-tertiary);font-size:12px">#${item.id}</span></td>
+      <td><strong>${escapeHtml(item.name)}</strong></td>
+      <td>${item.performance_count} 条</td>
+      <td style="color:var(--text-tertiary);font-size:12.5px">${item.created_at || "-"}</td>
       <td>
         <div class="action-group">
-          <button class="btn" data-action="edit-employee" data-id="${item.id}">编辑</button>
-          <button class="btn danger" data-action="delete-employee" data-id="${item.id}">删除</button>
+          <button class="btn sm" data-action="edit-employee" data-id="${item.id}">编辑</button>
+          <button class="btn danger sm" data-action="delete-employee" data-id="${item.id}">删除</button>
         </div>
       </td>
     </tr>`
@@ -255,20 +274,26 @@ function renderPerformances(items = []) {
     return;
   }
 
+  const confidenceBadge = (v) => {
+    const n = Number(v);
+    if (n >= 0.85) return `<span class="confidence-badge confidence-high">${n.toFixed(2)}</span>`;
+    if (n >= 0.6) return `<span class="confidence-badge confidence-mid">${n.toFixed(2)}</span>`;
+    return `<span class="confidence-badge confidence-low">${n.toFixed(2)}</span>`;
+  };
   performanceBody.innerHTML = items
     .map(
       (item) => `<tr>
-      <td>${item.id}</td>
+      <td><span style="color:var(--text-tertiary);font-size:12px">#${item.id}</span></td>
       <td>${item.report_date}</td>
-      <td>${escapeHtml(item.employee_name)}</td>
-      <td>${item.deal_count}</td>
+      <td><strong>${escapeHtml(item.employee_name)}</strong></td>
+      <td><strong>${item.deal_count}</strong></td>
       <td>${item.high_intent_count}</td>
       <td>${item.private_domain_new}</td>
-      <td>${Number(item.confidence).toFixed(2)}</td>
+      <td>${confidenceBadge(item.confidence)}</td>
       <td>
         <div class="action-group">
-          <button class="btn" data-action="edit-performance" data-id="${item.id}">编辑</button>
-          <button class="btn danger" data-action="delete-performance" data-id="${item.id}">删除</button>
+          <button class="btn sm" data-action="edit-performance" data-id="${item.id}">编辑</button>
+          <button class="btn danger sm" data-action="delete-performance" data-id="${item.id}">删除</button>
         </div>
       </td>
     </tr>`
@@ -282,12 +307,18 @@ function renderRanking(ranking = []) {
     return;
   }
 
+  const rankBadgeStyle = (r) => {
+    if (r === 1) return `background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;box-shadow:0 2px 8px rgba(245,158,11,0.4)`;
+    if (r === 2) return `background:linear-gradient(135deg,#94a3b8,#cbd5e1);color:#fff`;
+    if (r === 3) return `background:linear-gradient(135deg,#b45309,#d97706);color:#fff`;
+    return `background:var(--gray-200);color:var(--gray-600)`;
+  };
   rankingBody.innerHTML = ranking
     .map(
       (item) => `<tr>
-      <td>${item.rank}</td>
-      <td>${escapeHtml(item.employee_name)}</td>
-      <td>${item.deal_count}</td>
+      <td><span class="rank-badge" style="${rankBadgeStyle(item.rank)}">${item.rank}</span></td>
+      <td><strong>${escapeHtml(item.employee_name)}</strong></td>
+      <td><strong>${item.deal_count}</strong></td>
       <td>${item.high_intent_count}</td>
       <td>${item.private_domain_new}</td>
     </tr>`
