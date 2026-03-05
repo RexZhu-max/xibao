@@ -3,79 +3,241 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>销售日报业绩系统 MVP</title>
+    <title>销售业绩运营后台</title>
     <link rel="stylesheet" href="/assets/styles.css" />
   </head>
   <body>
-    <main class="container">
-      <header class="hero">
-        <h1>销售日报业绩系统</h1>
-        <p>上传手写白板照片，自动识别并生成当日排名与前三喜报。</p>
-      </header>
+    <div class="bg-shape bg-shape-a"></div>
+    <div class="bg-shape bg-shape-b"></div>
 
-      <section class="card">
-        <h2>1. 上传业绩照片</h2>
-        <form id="uploadForm" class="grid">
-          <label>
-            统计日期（可选）
-            <input id="reportDate" type="date" />
-          </label>
-          <label>
-            白板照片
-            <input id="photoInput" type="file" accept="image/*" required />
-          </label>
-          <button type="submit">上传并自动识别</button>
-        </form>
-        <p id="uploadMsg" class="msg"></p>
-      </section>
-
-      <section class="card">
-        <div class="row-head">
-          <h2>2. 识别结果（可人工修正）</h2>
-          <button id="submitFixBtn" type="button">提交修正数据</button>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-logo">S</div>
+          <div>
+            <h1>销售运营台</h1>
+            <p>Daily Performance Ops</p>
+          </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>员工</th>
-              <th>成交量</th>
-              <th>高意向客户数</th>
-              <th>私域新增数</th>
-              <th>置信度</th>
-            </tr>
-          </thead>
-          <tbody id="parsedBody">
-            <tr><td colspan="5" class="empty">暂无数据</td></tr>
-          </tbody>
-        </table>
-      </section>
 
-      <section class="card">
-        <h2>3. 每日排名</h2>
-        <p class="muted">排序规则：成交量 > 高意向客户数 > 私域新增数</p>
-        <table>
-          <thead>
-            <tr>
-              <th>名次</th>
-              <th>员工</th>
-              <th>成交量</th>
-              <th>高意向客户数</th>
-              <th>私域新增数</th>
-            </tr>
-          </thead>
-          <tbody id="rankingBody">
-            <tr><td colspan="5" class="empty">暂无排名</td></tr>
-          </tbody>
-        </table>
-      </section>
+        <nav class="nav">
+          <button class="nav-item active" data-view="dashboard">仪表盘</button>
+          <button class="nav-item" data-view="ocr">OCR 上传</button>
+          <button class="nav-item" data-view="employees">员工管理</button>
+          <button class="nav-item" data-view="performances">业绩管理</button>
+          <button class="nav-item" data-view="ranking">排名喜报</button>
+        </nav>
+      </aside>
 
-      <section class="card">
-        <h2>4. 前三喜报</h2>
-        <div id="posterGrid" class="poster-grid">
-          <p class="empty">暂无喜报</p>
+      <main class="main">
+        <header class="topbar card">
+          <div>
+            <h2>销售部门每日业绩系统</h2>
+            <p>统一管理：识别、录入、排名、喜报生成</p>
+          </div>
+          <label>
+            今日统计日期
+            <input type="date" id="globalDate" />
+          </label>
+        </header>
+
+        <section id="view-dashboard" class="view active">
+          <div class="stats-grid">
+            <article class="stat card">
+              <p>参与员工</p>
+              <h3 id="statStaff">0</h3>
+            </article>
+            <article class="stat card">
+              <p>总成交量</p>
+              <h3 id="statDeal">0</h3>
+            </article>
+            <article class="stat card">
+              <p>总高意向客户</p>
+              <h3 id="statIntent">0</h3>
+            </article>
+            <article class="stat card">
+              <p>总私域新增</p>
+              <h3 id="statPrivate">0</h3>
+            </article>
+          </div>
+
+          <div class="split-grid">
+            <article class="card champion-card">
+              <h3>今日销冠</h3>
+              <p id="championName" class="champion-name">暂无</p>
+              <p id="championMetrics" class="muted">请先录入今日数据</p>
+            </article>
+            <article class="card">
+              <div class="section-head">
+                <h3>Top 3</h3>
+              </div>
+              <ul id="topThreeList" class="simple-list">
+                <li class="empty">暂无数据</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="view-ocr" class="view">
+          <article class="card">
+            <div class="section-head">
+              <h3>白板照片上传识别</h3>
+            </div>
+            <form id="uploadForm" class="inline-form">
+              <label>
+                统计日期
+                <input id="ocrDate" type="date" />
+              </label>
+              <label>
+                白板照片
+                <input id="photoInput" type="file" accept="image/*" required />
+              </label>
+              <button type="submit" class="btn primary">上传并识别</button>
+            </form>
+            <p id="uploadMsg" class="msg"></p>
+          </article>
+
+          <article class="card">
+            <div class="section-head">
+              <h3>识别结果（支持修正提交）</h3>
+              <button id="submitFixBtn" class="btn">提交修正</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>员工</th>
+                    <th>成交量</th>
+                    <th>高意向客户</th>
+                    <th>私域新增</th>
+                    <th>置信度</th>
+                  </tr>
+                </thead>
+                <tbody id="parsedBody">
+                  <tr><td class="empty" colspan="5">暂无识别数据</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section id="view-employees" class="view">
+          <article class="card">
+            <div class="section-head">
+              <h3>员工列表</h3>
+              <div class="row-actions">
+                <input id="employeeSearch" placeholder="搜索员工姓名" />
+                <button id="employeeSearchBtn" class="btn">查询</button>
+                <button id="addEmployeeBtn" class="btn primary">新增员工</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>姓名</th>
+                    <th>业绩记录数</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="employeeBody">
+                  <tr><td class="empty" colspan="5">暂无员工</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section id="view-performances" class="view">
+          <article class="card">
+            <div class="section-head">
+              <h3>业绩记录</h3>
+              <div class="row-actions">
+                <label>
+                  日期
+                  <input id="perfDateFilter" type="date" />
+                </label>
+                <label>
+                  员工
+                  <select id="perfEmployeeFilter">
+                    <option value="">全部</option>
+                  </select>
+                </label>
+                <button id="perfFilterBtn" class="btn">筛选</button>
+                <button id="addPerfBtn" class="btn primary">新增业绩</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>日期</th>
+                    <th>员工</th>
+                    <th>成交量</th>
+                    <th>高意向</th>
+                    <th>私域新增</th>
+                    <th>置信度</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="performanceBody">
+                  <tr><td class="empty" colspan="8">暂无业绩记录</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section id="view-ranking" class="view">
+          <article class="card">
+            <div class="section-head">
+              <h3>每日排名与喜报</h3>
+              <div class="row-actions">
+                <input id="rankingDate" type="date" />
+                <button id="refreshRankingBtn" class="btn">刷新排名</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>名次</th>
+                    <th>员工</th>
+                    <th>成交量</th>
+                    <th>高意向客户</th>
+                    <th>私域新增</th>
+                  </tr>
+                </thead>
+                <tbody id="rankingBody">
+                  <tr><td class="empty" colspan="5">暂无排名数据</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Top 3 喜报</h3>
+            <div id="posterGrid" class="poster-grid">
+              <p class="empty">暂无喜报</p>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <div id="modal" class="modal hidden">
+      <div class="modal-content card">
+        <h3 id="modalTitle">弹窗</h3>
+        <form id="modalForm" class="modal-form"></form>
+        <div class="modal-actions">
+          <button id="modalCancel" class="btn" type="button">取消</button>
+          <button id="modalConfirm" class="btn primary" type="button">保存</button>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
 
     <script src="/assets/app.js"></script>
   </body>

@@ -43,6 +43,15 @@ uvicorn app.main:app --reload --port 8000
 访问：`http://localhost:8000`
 
 ## API 概览
+- `GET /api/dashboard?report_date=YYYY-MM-DD` 仪表盘数据（总量、销冠、Top3）
+- `GET /api/employees?keyword=张` 员工列表查询
+- `POST /api/employees` 新增员工
+- `PUT /api/employees/{employee_id}` 编辑员工
+- `DELETE /api/employees/{employee_id}` 删除员工
+- `GET /api/performances?report_date=YYYY-MM-DD&employee_id=1` 业绩列表查询
+- `POST /api/performances` 新增业绩
+- `PUT /api/performances/{performance_id}` 编辑业绩
+- `DELETE /api/performances/{performance_id}` 删除业绩
 - `POST /api/upload` 上传白板照片并自动识别入库
   - Query: `report_date=YYYY-MM-DD`（可选）
   - Form: `file`
